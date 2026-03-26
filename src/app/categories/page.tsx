@@ -1,0 +1,43 @@
+import Category from "@/types/Category";
+import Link from "next/link";
+import Image from "next/image";
+
+export default async function Categories() {
+  const res = await fetch("https://api.escuelajs.co/api/v1/categories");
+  const categories: Category[] = await res.json();
+
+  const categoriesList = (
+    <ul
+      className="flex flex-wrap gap-3 items-center justify-center" //"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"
+    >
+      {categories.map((c) => (
+        <li key={c.id}>
+          <div className="bg-white rounded-2xl shadow-2xl p-2 w-58 flex flex-col gap-2 items-center">
+            <Link href={`/categories/${c.id}`}>
+              <h3 className="hover:underline">{c.name}</h3>
+            </Link>
+            <Image 
+            className="cursor-pointer"
+              src={c.image}
+              width={200}
+              height={200}
+              alt={c.name}
+              unoptimized
+            />
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+
+  return (
+    <section className="bg-blue-200 min-h-screen p-6 py-6 px-4  md:px-20">
+      <h2 className="text-center text-4xl text-white mb-8">Categories</h2>
+      {categoriesList}
+    </section>
+  );
+}
+
+// SSR
+// SSG
+// ISR
